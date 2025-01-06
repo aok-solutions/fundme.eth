@@ -5,9 +5,14 @@ import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/inte
 
 contract FundMe {
     uint public minimumUsd = 5e18;
+    address[] public funders;
+    mapping(address funder => uint fundAmount) public addressToFundAmount;
 
     function fund() public payable {
         require(getConversionRate(msg.value) >= minimumUsd, "didn't send enough ETH");
+
+        funders.push(msg.sender);
+        addressToFundAmount[msg.sender] = addressToFundAmount[msg.sender] + msg.value;
     }
 
     function getPrice() public view returns(uint) {
