@@ -45,4 +45,12 @@ contract FundMe {
         if(msg.sender != owner) { revert NotOwner(); }
         _;
     }
+
+    receive() external payable {
+        fund();
+    }
+
+    fallback() external payable {
+        fund();
+    }
 }
